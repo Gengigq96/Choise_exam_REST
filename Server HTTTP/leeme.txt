@@ -1,0 +1,25 @@
+Virtual environments:
+ python3 -m venv venv
+active environment:
+. venv/bin/activate
+
+Install Flask
+
+Within the activated environment, use the following command to install Flask:
+
+pip install Flask
+pip install Flask-RESTful
+
+export FLASK_APP=rest-server.py
+RUN:
+ flask run
+
+
+
+send json 
+curl -H "Content-Type: application/json" -X POST -d '{"name": "xyz","address":"address xyz"}' http://127.0.0.1:5000/
+
+curl http://127.0.0.1:5000/multi/3
+
+curl http://127.0.0.1:5000/
+
