@@ -12,14 +12,14 @@ pip install Flask-RESTful
 
 export FLASK_APP=rest-server.py
 RUN:
- flask run
+flask run
 
 
 
 send json 
 curl -H "Content-Type: application/json" -X POST -d '{"name": "xyz","address":"address xyz"}' http://127.0.0.1:5000/
-
-curl http://127.0.0.1:5000/multi/3
+load exam:
+curl http://127.0.0.1:5000/exams/3
 
 curl http://127.0.0.1:5000/
 
