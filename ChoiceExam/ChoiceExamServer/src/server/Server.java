@@ -88,7 +88,7 @@ public class Server {
             interruptEnd.start();
             synchronized (obj){
                 while(!start){
-                    System.out.println("Write \""+ End_word+"\" to start the exam");
+                    System.out.println("Write \""+ End_word+"\" to end the exam");
 
                     obj.wait();
                     obj.endExam();

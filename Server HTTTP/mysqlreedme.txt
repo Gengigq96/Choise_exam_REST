@@ -22,3 +22,15 @@ CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Admin_1234';
 
 permisos
 GRANT ALL PRIVILEGES ON exams.* TO 'admin'@'localhost';
+
+crate database
+CREATE DATABASE exams;
+
+drop database
+DREP DATABASE exams;
+
+import document SQL
+sudo mysql -u admin -p exams < backend.sql
+
+export to document.sql
+sudo mysqldump -u admin -p exams > backend.sql

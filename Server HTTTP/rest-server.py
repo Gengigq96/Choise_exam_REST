@@ -116,17 +116,95 @@ class Question(Resource):
         return debug_store_exam, 201
 
 
-# class ExamByDesc(Resource):
-#
-#     def get(self, txtSearch):
-#
-#         cursor_search_exam = mydb.cursor(dictionary=True)
-#
-#         cursor_search_exam.execute("SELECT * FROM exam WHERE description = \"*"+txtSearch+"*\";")
-#
-#         result_exams = cursor_search_exam.fetchall()
-#
-#         return (result_exams)
+class ExamByDesc(Resource):
+    def get(self, txtSearch):
+
+        cursor_search_exam = mydb.cursor(dictionary=True)
+
+        cursor_search_exam.execute("SELECT * FROM exam WHERE description LIKE '%"+txtSearch+"%';")
+
+        result_exams = cursor_search_exam.fetchall()
+
+        return (result_exams)
+
+class Grades(Resource):
+    def get(self, id_exam):
+
+        cursor_search = mydb.cursor(dictionary=True)
+
+        cursor_search.execute("SELECT * FROM grade WHERE id_exam = '"+id_exam+"';")
+
+        result= cursor_search.fetchall()
+
+        return (result)
+
+    def post(self, id_exam):
+
+        data = request.get_json()
+
+        cursor = mydb.cursor(dictionary=True)
+
+        sql = "INSERT INTO grade (id_student, id_exam, nota) VALUES (%s, %s, %s);"
+        values = ( data["id_student"],id_exam, data["nota"])
+
+        cursor.execute(sql, values)
+
+        mydb.commit()
+
+        debug = str(cursor.rowcount) + " record inserted"
+
+        return debug, 201
+
+    def delete(self, id_exam):
+
+        cursor = mydb.cursor(dictionary=True)
+
+        cursor.execute("DELETE FROM grade WHERE id_exam = "+id_exam+"; ")
+
+        mydb.commit()
+
+        debug = str(cursor.rowcount) + " record(s) deleted"
+
+        cursor.close()
+
+        return debug, 201
+
+class Student(Resource):
+    def get(self, id_student):
+
+        cursor_search = mydb.cursor(dictionary=True)
+
+        cursor_search.execute("SELECT * FROM student WHERE id_student = '"+id_student+"';")
+
+        result= cursor_search.fetchall()
+
+        return (result)
+
+    def post(self, id_student):
+
+        cursor = mydb.cursor(dictionary=True)
+
+        cursor.execute("INSERT INTO student VALUES('"+id_student+"');")
+
+        mydb.commit()
+
+        debug = str(cursor.rowcount) + " record inserted"
+
+        return debug, 201
+
+    def delete(self, id_student):
+
+        cursor = mydb.cursor(dictionary=True)
+
+        cursor.execute("DELETE FROM student WHERE id_student = '"+id_student+"'; ")
+
+        mydb.commit()
+
+        debug = str(cursor.rowcount) + " record(s) deleted"
+
+        cursor.close()
+
+        return debug, 201
 
 
 #LIST ALL EXAMS (GET) // POST AN EXAM (POST)
@@ -136,15 +214,13 @@ api.add_resource(Exam, '/exams/<string:id_exam>')
 #POST A QUESTION OF AN SPECIFIC EXAM (POST)
 api.add_resource(Question, '/question/<int:id_exam>')
 #SEARCH EXAM BY FULL/PARTIAL DESC (GET)
-#api.add_resource(ExamByDesc, '/exams/<string:txtSearch>')
+api.add_resource(ExamByDesc, '/examsdesc/<string:txtSearch>')
 
 #******
-#SEARCH EXAM BY FULL/PARTIAL DESC (GET)
-# api.add_resource(SearchExam, '/exams/<string:desc>')
 # #UPLOAD (POST) AND DOWNLOAD (GET) STUDENTS GRADES
-# api.add_resource(Grades, '/grades/<string:id_exam>')
-# #MANAGE STUDENTS (GET)
-# api.add_resource(Student, '/students/<string:id_student>')
+api.add_resource(Grades, '/grades/<string:id_exam>')
+# #MANAGE STUDENTS (GET)(POST)
+api.add_resource(Student, '/students/<string:id_student>')
 #******
 
 

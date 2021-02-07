@@ -29,6 +29,15 @@ load exam:
 curl http://127.0.0.1:5000/exams/3
 
 curl http://127.0.0.1:5000/
-
+//student
+curl http://127.0.0.1:5000/students/ggq2
+curl -X POST http://127.0.0.1:5000/students/ggq2
+curl -X DELETE http://127.0.0.1:5000/students/ggq2
+//Grade
+curl -H "Content-Type: application/json" -X POST -d '{"id_student": "ggq2", "nota": "3/3"}' http://127.0.0.1:5000/grades/1
+curl http://127.0.0.1:5000/grades/1
+curl -X DELETE http://127.0.0.1:5000/grades/1
 
 python3 -m pip install mysql-connector-python
+
+
