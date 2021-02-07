@@ -1,0 +1,23 @@
+https://likegeeks.com/es/mysql-en-linux/
+sudo apt install mysql-server
+python3 -m pip install mysql-connector-python
+mysql --version
+
+user
+/etc/mysql/my.cnf
+start
+sudo systemctl enable mysql
+
+status
+sudo systemctl status mysql
+
+set root password:
+sudo mysql_secure_installation 
+
+New user: root password = admin
+sudo mysql -u root -p
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Admin_1234';
+
+permisos
+GRANT ALL PRIVILEGES ON exams.* TO 'admin'@'localhost';
+
