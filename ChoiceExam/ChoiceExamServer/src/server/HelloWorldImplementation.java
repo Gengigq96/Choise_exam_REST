@@ -9,10 +9,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
-/**
- * Created by eloigabal on 05/10/2019.
- */
 
 public class HelloWorldImplementation extends UnicastRemoteObject implements HelloWorldServer {
     private boolean started = false;
@@ -20,7 +18,15 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
     private String [][] quests;
     private ArrayList<HelloWorldClient> clients = new ArrayList<HelloWorldClient>();
     private HashMap<String,Integer[]> grade = new HashMap<String,Integer[]>();//ID,QUEST,POINTS
+    private Request requester = new Request();
+    private String id_exam = new String();
+    private String location = new String();
     public HelloWorldImplementation() throws RemoteException {
+        try {
+            PrepareExam();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         quests = new String[3][5];
         String csvFile = "resources/test.csv";
         BufferedReader br = null;
@@ -31,13 +37,18 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
             br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
                 // use comma as separator
-                quests[index] = line.split(cvsSplitBy);
+                String[] lineSplit = line.split(cvsSplitBy);
+                String sendQuestion = "{\"id_exam\": "+id_exam+",\"question\":\""+lineSplit[0]+"\", \"answer1\": \""+lineSplit[1]+"\", \"answer2\": \""+lineSplit[2]+"\", \"answer3\": \""+lineSplit[3]+"\", \"correct_answer\": \""+lineSplit[4]+"\"}";
+                requester.post("http://127.0.0.1:5000/question/1", sendQuestion);
+                quests[index] = lineSplit;
                 index++;
             }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (br != null) {
@@ -49,15 +60,22 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
             }
         }
     }
-
+    private void PrepareExam() throws Exception{
+        String separator = "\\\\";
+        String info = "{\"description\": \"Maths\",\"date\":\"01/01/2021\", \"time\": \"120\", \"location\": \"Port:5000,Host:http://127.0.0.1\"}";
+        requester.post("http://127.0.0.1:5000/exams/", info);
+        String returned = requester.get("http://127.0.0.1:5000/examslast/Maths").replace(separator,"");
+        List<String> listreturned = new ArrayList<String>(Arrays.asList(returned.replace(",","").split(" ")));
+        id_exam =  listreturned.get(1);
+        location = listreturned.get(listreturned.size() - 1).replace("\"","").split("}")[0];
+    }
 
 
     public void register(HelloWorldClient client) throws RemoteException {
         if (!started) {
-            System.out.println("Registering Student, Nº registered students: "+clients.size());
-
             this.grade.put(client.notifyRegist(), new Integer[]{0,0});
             this.clients.add(client);
+            System.out.println("Registering Student, Nº registered students: "+clients.size());
         }else{
             client.notifyExamStarted();
         }

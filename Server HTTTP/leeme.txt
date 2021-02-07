@@ -27,6 +27,9 @@ curl -H "Content-Type: application/json" -X POST -d '{"id_exam": 1,"question":"3
 
 load exam:
 curl http://127.0.0.1:5000/exams/3
+LOAD LAST EXAM BY DESC:
+curl http://127.0.0.1:5000/examslast/iption1
+
 
 curl http://127.0.0.1:5000/
 //student

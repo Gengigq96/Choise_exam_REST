@@ -127,6 +127,17 @@ class ExamByDesc(Resource):
 
         return (result_exams)
 
+class ExamByDescLast(Resource):
+    def get(self, txtSearch):
+
+        cursor_search_exam = mydb.cursor(dictionary=True)
+
+        cursor_search_exam.execute("SELECT * FROM exam WHERE description LIKE '%"+txtSearch+"%' ORDER BY id_exam DESC LIMIT 1;")
+
+        result_exams = cursor_search_exam.fetchall()
+
+        return (result_exams)
+
 class Grades(Resource):
     def get(self, id_exam):
 
@@ -215,6 +226,9 @@ api.add_resource(Exam, '/exams/<string:id_exam>')
 api.add_resource(Question, '/question/<int:id_exam>')
 #SEARCH EXAM BY FULL/PARTIAL DESC (GET)
 api.add_resource(ExamByDesc, '/examsdesc/<string:txtSearch>')
+
+#SEARCH EXAM BY FULL/PARTIAL DESC LAST INSERT EXAM (GET)
+api.add_resource(ExamByDescLast, '/examslast/<string:txtSearch>')
 
 #******
 # #UPLOAD (POST) AND DOWNLOAD (GET) STUDENTS GRADES
