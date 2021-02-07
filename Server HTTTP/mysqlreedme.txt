@@ -8,11 +8,13 @@ user
 start
 sudo systemctl enable mysql
 
+sudo systemctl start mysql
+
 status
 sudo systemctl status mysql
 
 set root password:
-sudo mysql_secure_installation 
+sudo mysql_secure_installation
 
 New user: root password = admin
 sudo mysql -u root -p
@@ -20,4 +22,3 @@ CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Admin_1234';
 
 permisos
 GRANT ALL PRIVILEGES ON exams.* TO 'admin'@'localhost';
-

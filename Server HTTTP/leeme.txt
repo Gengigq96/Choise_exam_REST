@@ -16,10 +16,19 @@ flask run
 
 
 
-send json 
-curl -H "Content-Type: application/json" -X POST -d '{"name": "xyz","address":"address xyz"}' http://127.0.0.1:5000/
+send json
+
+//exams
+curl -H "Content-Type: application/json" -X POST -d '{"description": "description3","date":"01/01/2021", "time": "120", "location": "UdL"}' http://127.0.0.1:5000/exams/
+
+//questions
+curl -H "Content-Type: application/json" -X POST -d '{"id_exam": 1,"question":"34+1", "answer1": "35", "answer2": "10", "answer3": "20", "correct_answer": "1"}' http://127.0.0.1:5000/question/1
+
+
 load exam:
 curl http://127.0.0.1:5000/exams/3
 
 curl http://127.0.0.1:5000/
 
+
+python3 -m pip install mysql-connector-python
