@@ -75,6 +75,7 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
         if (!started) {
             this.grade.put(client.notifyRegist(), new Integer[]{0,0});
             this.clients.add(client);
+            client.notifyGrade(location);
             System.out.println("Registering Student, Nº registered students: "+clients.size());
         }else{
             client.notifyExamStarted();
@@ -87,6 +88,7 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
 
     @Override
     public void endExam() throws RemoteException {
+        end = true;
         synchronized(this) {
             end = true;
         }
@@ -107,6 +109,13 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
                 sb.append(';');
                 sb.append(results[1]);
                 sb.append('\n');
+
+                try {
+                    String info = "{\"id_student\": \""+name+"\",\"nota\":\""+results[0]+"/"+results[1]+"\"}";
+                    requester.post("http://127.0.0.1:5000/grades/"+id_exam, info);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             writer.write(sb.toString());
 
@@ -128,12 +137,15 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
                     }
                     try {
                         client.notifyGrade(client.getID()+" note: "+grade.get(client.getID())[1]+"/"+quests.length);
+
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
+
                 }
             }.start();
-            }
+
+        }
     }
     public String[] getQuest(String id)throws RemoteException{
         Integer[] quest = this.grade.get(id);

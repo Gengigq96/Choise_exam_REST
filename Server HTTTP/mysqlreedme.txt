@@ -27,7 +27,7 @@ crate database
 CREATE DATABASE exams;
 
 drop database
-DREP DATABASE exams;
+DROP DATABASE exams;
 
 import document SQL
 sudo mysql -u admin -p exams < backend.sql

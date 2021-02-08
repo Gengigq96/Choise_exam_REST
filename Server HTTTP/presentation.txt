@@ -1,0 +1,50 @@
+
+1- Create 4 different exams, the first and the second with similar description (e.g. Distributed Computing 1 & 2)
+
+curl -H "Content-Type: application/json" -X POST -d '{"description": "e.g. Distributed Computing 1","date":"01/01/2021", "time": "120", "location": "Port:5000Host:http://127.0.0.1"}' http://127.0.0.1:5000/exams/
+curl -H "Content-Type: application/json" -X POST -d '{"description": "e.g. Distributed Computing 2","date":"01/01/2021", "time": "120", "location": "Port:5000Host:http://127.0.0.1"}' http://127.0.0.1:5000/exams/
+curl -H "Content-Type: application/json" -X POST -d '{"description": "examTest","date":"01/01/2021", "time": "120", "location": "Port:5000Host:http://127.0.0.1"}' http://127.0.0.1:5000/exams/
+
+curl -H "Content-Type: application/json" -X POST -d '{"description": "exam4","date":"01/01/2021", "time": "120", "location": "Port:5000Host:http://127.0.0.1"}' http://127.0.0.1:5000/exams/
+
+2- Modify 3rd’s description
+curl -H "Content-Type: application/json" -X POST -d '{"description": "Modified Exam"}' http://127.0.0.1:5000/exams/3
+
+3-Search an exam by its description (full)
+curl http://127.0.0.1:5000/examsdesc/Modified_Exam
+
+4- Delete the forth one
+curl -X DELETE http://127.0.0.1:5000/exams/4
+
+5- List all exams 
+curl http://127.0.0.1:5000/exams/
+
+6- Upload grades to the first and the second exam
+curl -X POST http://127.0.0.1:5000/students/ggq2
+curl -X POST http://127.0.0.1:5000/students/alp4
+
+curl -H "Content-Type: application/json" -X POST -d '{"id_student": "ggq2", "nota": "3/3"}' http://127.0.0.1:5000/grades/1
+curl -H "Content-Type: application/json" -X POST -d '{"id_student": "alp4", "nota": "2/3"}' http://127.0.0.1:5000/grades/1
+
+curl -H "Content-Type: application/json" -X POST -d '{"id_student": "ggq2", "nota": "2/3"}' http://127.0.0.1:5000/grades/2
+curl -H "Content-Type: application/json" -X POST -d '{"id_student": "alp4", "nota": "3/3"}' http://127.0.0.1:5000/grades/2
+
+7- Delete the second
+curl http://127.0.0.1:5000/grades/2
+curl -X DELETE http://127.0.0.1:5000/exams/2
+curl -X DELETE http://127.0.0.1:5000/grades/2
+
+8- Search an exam by its description (partial)
+curl http://127.0.0.1:5000/exams/ied-Ex
+
+9- Show its grades
+curl http://127.0.0.1:5000/grades/1
+
+10- Check some ID from an existent student
+curl http://127.0.0.1:5000/students/ggq2
+
+11- Check some other ID 
+curl http://127.0.0.1:5000/students/alp4
+
+
+

@@ -78,23 +78,24 @@ class Exam(Resource):
         return debug_modify_desc_exam, 201
 
     def delete(self, id_exam):
+        try:
+            cursor_delete_exam = mydb.cursor(dictionary=True)
 
+            cursor_delete_exam.execute("DELETE FROM question WHERE id_exam = "+id_exam+"; ")
 
-        cursor_delete_exam = mydb.cursor(dictionary=True)
+            debug_delete_question = cursor_delete_exam.rowcount
 
-        cursor_delete_exam.execute("DELETE FROM question WHERE id_exam = "+id_exam+"; ")
+            cursor_delete_exam.execute("DELETE FROM exam WHERE id_exam = "+id_exam+";")
 
-        debug_delete_question = cursor_delete_exam.rowcount
+            mydb.commit()
 
-        cursor_delete_exam.execute("DELETE FROM exam WHERE id_exam = "+id_exam+";")
+            debug_delete_exam = str(cursor_delete_exam.rowcount + debug_delete_question) + " record(s) deleted"
 
-        mydb.commit()
+            cursor_delete_exam.close()
 
-        debug_delete_exam = str(cursor_delete_exam.rowcount + debug_delete_question) + " record(s) deleted"
-
-        cursor_delete_exam.close()
-
-        return debug_delete_exam, 201
+            return debug_delete_exam, 201
+        except:
+            return "Error:This exam have grades", 201
 
 class Question(Resource):
 
@@ -118,7 +119,7 @@ class Question(Resource):
 
 class ExamByDesc(Resource):
     def get(self, txtSearch):
-
+        txtSearch = txtSearch.replace("_", " ")
         cursor_search_exam = mydb.cursor(dictionary=True)
 
         cursor_search_exam.execute("SELECT * FROM exam WHERE description LIKE '%"+txtSearch+"%';")
@@ -129,7 +130,7 @@ class ExamByDesc(Resource):
 
 class ExamByDescLast(Resource):
     def get(self, txtSearch):
-
+        txtSearch = txtSearch.replace("_", " ")
         cursor_search_exam = mydb.cursor(dictionary=True)
 
         cursor_search_exam.execute("SELECT * FROM exam WHERE description LIKE '%"+txtSearch+"%' ORDER BY id_exam DESC LIMIT 1;")
@@ -179,6 +180,7 @@ class Grades(Resource):
         cursor.close()
 
         return debug, 201
+
 
 class Student(Resource):
     def get(self, id_student):
