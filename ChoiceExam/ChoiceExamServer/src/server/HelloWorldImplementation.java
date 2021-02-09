@@ -38,8 +38,10 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
             while ((line = br.readLine()) != null) {
                 // use comma as separator
                 String[] lineSplit = line.split(cvsSplitBy);
+
                 String sendQuestion = "{\"id_exam\": "+id_exam+",\"question\":\""+lineSplit[0]+"\", \"answer1\": \""+lineSplit[1]+"\", \"answer2\": \""+lineSplit[2]+"\", \"answer3\": \""+lineSplit[3]+"\", \"correct_answer\": \""+lineSplit[4]+"\"}";
-                requester.post("http://127.0.0.1:5000/question/1", sendQuestion);
+
+                requester.post("http://127.0.0.1:5000/question/"+id_exam, sendQuestion);
                 quests[index] = lineSplit;
                 index++;
             }
@@ -111,7 +113,7 @@ public class HelloWorldImplementation extends UnicastRemoteObject implements Hel
                 sb.append('\n');
 
                 try {
-                    String info = "{\"id_student\": \""+name+"\",\"nota\":\""+results[0]+"/"+results[1]+"\"}";
+                    String info = "{\"id_student\": \""+name+"\",\"nota\":\""+results[1]+"\"}";
                     requester.post("http://127.0.0.1:5000/grades/"+id_exam, info);
                 } catch (Exception e) {
                     e.printStackTrace();

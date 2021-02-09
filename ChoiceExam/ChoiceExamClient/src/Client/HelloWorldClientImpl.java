@@ -17,7 +17,6 @@ public class HelloWorldClientImpl extends UnicastRemoteObject implements HelloWo
         return universityID;
     }
     public String notifyRegist() throws RemoteException{
-        String id = "";
         while (true) {
             Scanner sc = new Scanner(System.in);
             System.out.println("Enter your University ID: ");
@@ -29,9 +28,6 @@ public class HelloWorldClientImpl extends UnicastRemoteObject implements HelloWo
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        while (universityID.length()<4) {
-
         }
 
         System.out.println("Client registered, waiting for notification");

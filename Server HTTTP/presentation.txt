@@ -35,7 +35,7 @@ curl -X DELETE http://127.0.0.1:5000/exams/2
 curl -X DELETE http://127.0.0.1:5000/grades/2
 
 8- Search an exam by its description (partial)
-curl http://127.0.0.1:5000/exams/ied-Ex
+curl http://127.0.0.1:5000/examsdesc/ied_Ex
 
 9- Show its grades
 curl http://127.0.0.1:5000/grades/1
